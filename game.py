@@ -1,13 +1,13 @@
 import character
 class Game:
     def __init__(self):
-        self.self = self
+        self.characters= []
         self.create_characters()
 
     def create_characters():
         alex_attributes = {
         "glasses":"no",
-        "sking_tone": "light",
+        "skin_tone": "light",
         "hair_color": "black",
         "eye_color":"brown",
         "sex":"male",
