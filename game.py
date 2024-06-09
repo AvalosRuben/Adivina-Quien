@@ -1,301 +1,50 @@
 from character import Character
-import pygame
+from player import Player
 import characters_images
 class Game:
     def __init__(self):
-        self.characters= []
-        self.create_characters()
+        self.human_player = Player()
+        self.computer_player = Player()
+        self.characters = []  # Common list of Characters available in the game
+        self.current_turn = 'human'  # Can be 'human' or 'computer'
+        self.game_state = 'in progress'
+        self.remaining_questions = 20  # For example
 
-    def create_characters(self):
-        alex_attributes = {
-        "glasses":"no",
-        "skin_tone": "light",
-        "hair_color": "black",
-        "eye_color":"brown",
-        "sex":"male",
-        "facial_hair": "no",
-        "hat":"no"
-        }
-        alex = Character("alex", alex_attributes)
-        self.characters.append(alex)
+    def start_game(self):
+        # Set up the initial game configuration
+        self.assign_hidden_characters()
 
-        alfred_attributes = {
-        "glasses": "yes",
-        "skin_tone": "light",
-        "hair_color": "orange",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "moustache",
-        "hat": "no"
-        }
-        alfred = Character("Alfred", alfred_attributes)
-        self.characters.append(alfred)
+    def assign_hidden_characters(self):
+        # Randomly assigns the hidden characters to both players
+        import random
+        self.human_player.hidden_character = random.choice(self.characters)
+        self.computer_player.hidden_character = random.choice(self.characters)
 
-        anita_attributes = {
-        "glasses": "yes",
-        "skin_tone": "light",
-        "hair_color": "brown",
-        "eye_color": "brown",
-        "sex": "female",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        anita = Character("Anita", anita_attributes)
-        self.characters.append(anita)
+    def change_turn(self):
+        # Switches the turn between the human player and the computer
+        self.current_turn = 'computer' if self.current_turn == 'human' else 'human'
 
-        anne_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "blonde",
-        "eye_color": "blue",
-        "sex": "female",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        anne = Character("Anne", anne_attributes)
-        self.characters.append(anne)
+    def validate_question(self, question):
+        # Validates the player's question
+        pass
 
-        bernard_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "brown",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "moustache",
-        "hat": "no"
-        }
-        bernard = Character("Bernard", bernard_attributes)
-        self.characters.append(bernard)
+    def answer_question(self, question):
+        # Answers the player's question
+        pass
 
-        bill_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "orange",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "beard and moustache",
-        "hat": "no"
-        }
-        bill = Character("Bill", bill_attributes)
-        self.characters.append(bill)
+    def mark_characters(self, characteristic, value):
+        # Marks the characters that do not match the selected characteristic
+        pass
 
-        charles_attributes = {
-        "glasses": "yes",
-        "skin_tone": "light",
-        "hair_color": "brown",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        charles = Character("Charles", charles_attributes)
-        self.characters.append(charles)
-        
-        claire_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "orange",
-        "eye_color": "brown",
-        "sex": "female",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        claire = Character("Claire", claire_attributes)
-        self.characters.append(claire)
-
-        david_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "blonde",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }   
-        david = Character("David", david_attributes)
-        self.characters.append(david)
-
-        eric_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "blonde",
-        "eye_color": "blue",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        eric = Character("Eric", eric_attributes)
-        self.characters.append(eric)
-
-        frans_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "red",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "moustache",
-        "hat": "no"
-        }
-        frans = Character("Frans", frans_attributes)
-        self.characters.append(frans)
-
-        george_attributes = {
-        "glasses": "yes",
-        "skin_tone": "light",
-        "hair_color": "white",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "beard and moustache",
-        "hat": "no"
-        }
-        george = Character("George", george_attributes)
-        self.characters.append(george)
-
-        herman_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "no hair",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        herman = Character("Herman", herman_attributes)
-        self.characters.append(herman)
-
-        joe_attributes = {
-        "glasses": "yes",
-        "skin_tone": "light",
-        "hair_color": "no hair",
-        "eye_color": "blue",
-        "sex": "male",
-        "facial_hair": "beard and moustache",
-        "hat": "no"
-        }
-        joe = Character("Joe", joe_attributes)
-        self.characters.append(joe)
-
-        maria_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "brown",
-        "eye_color": "brown",
-        "sex": "female",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        maria = Character("Maria", maria_attributes)
-        self.characters.append(maria)
-
-        max_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "black",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        max = Character("Max", max_attributes)
-        self.characters.append(max)
-
-        paul_attributes = {
-        "glasses": "yes",
-        "skin_tone": "light",
-        "hair_color": "no hair",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        paul = Character("Paul", paul_attributes)
-        self.characters.append(paul)
-
-        peter_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "white",
-        "eye_color": "blue",
-        "sex": "male",
-        "facial_hair": "moustache",
-        "hat": "no"
-        }
-        peter = Character("Peter", peter_attributes)
-        self.characters.append(peter)
-
-        philip_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "red",
-        "eye_color": "blue",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        philip = Character("Philip", philip_attributes)
-        self.characters.append(philip)
-
-        richard_attributes = {
-        "glasses": "yes",
-        "skin_tone": "light",
-        "hair_color": "brown",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        richard = Character("Richard", richard_attributes)
-        self.characters.append(richard)
-
-        robert_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "brown",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "beard and moustache",
-        "hat": "no"
-        }
-        robert = Character("Robert", robert_attributes)
-        self.characters.append(robert)
-
-        sam_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "blonde",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        sam = Character("Sam", sam_attributes)
-        self.characters.append(sam)
-
-        susan_attributes = {
-        "glasses": "yes",
-        "skin_tone": "light",
-        "hair_color": "blonde",
-        "eye_color": "blue",
-        "sex": "female",
-        "facial_hair": "no",
-        "hat": "no"
-        }
-        susan = Character("Susan", susan_attributes)
-        self.characters.append(susan)
-
-        tom_attributes = {
-        "glasses": "no",
-        "skin_tone": "light",
-        "hair_color": "black",
-        "eye_color": "brown",
-        "sex": "male",
-        "facial_hair": "moustache",
-        "hat": "no"
-        }
-        tom = Character("Tom", tom_attributes)
-        self.characters.append(tom)
-    
-    def draw_board(self,screen):
-        screen.fill((131,204,205))
-        alex_image = pygame.image.load("characters_images/alex_image.png")
-        screen.blit(alex_image,(100,200))
+    def guess_character(self, guessed_character):
+        # Allows the player to guess the hidden character
+        if self.current_turn == 'human':
+            if guessed_character == self.computer_player.hidden_character:
+                self.game_state = 'human wins'
+            else:
+                self.game_state = 'computer wins'
+        else:
+            if guessed_character == self.human_player.hidden_character:
+                self.game_state = 'computer wins'
+            else:
+                self.game_state = 'human wins'
