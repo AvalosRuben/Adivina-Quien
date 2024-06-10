@@ -2,10 +2,10 @@ from player import Player
 import random
 
 class Game:
-    def __init__(self):
+    def __init__(self, characters):
         self.human_player = Player()
         self.computer_player = Player()
-        self.characters = []  # Common list of Characters available in the game
+        self.characters = characters  # Common list of Characters available in the game
         self.current_turn = 'human'  # Can be 'human' or 'computer'
         self.game_state = 'in progress'
 
