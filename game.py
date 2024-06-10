@@ -1,6 +1,6 @@
-from character import Character
 from player import Player
-import characters_images
+import random
+
 class Game:
     def __init__(self):
         self.human_player = Player()
@@ -8,15 +8,14 @@ class Game:
         self.characters = []  # Common list of Characters available in the game
         self.current_turn = 'human'  # Can be 'human' or 'computer'
         self.game_state = 'in progress'
-        self.remaining_questions = 20  # For example
 
     def start_game(self):
         # Set up the initial game configuration
         self.assign_hidden_characters()
+        # You might also want to shuffle and distribute characters here
 
     def assign_hidden_characters(self):
         # Randomly assigns the hidden characters to both players
-        import random
         self.human_player.hidden_character = random.choice(self.characters)
         self.computer_player.hidden_character = random.choice(self.characters)
 
@@ -24,27 +23,18 @@ class Game:
         # Switches the turn between the human player and the computer
         self.current_turn = 'computer' if self.current_turn == 'human' else 'human'
 
-    def validate_question(self, question):
-        # Validates the player's question
-        pass
-
-    def answer_question(self, question):
-        # Answers the player's question
-        pass
-
-    def mark_characters(self, characteristic, value):
-        # Marks the characters that do not match the selected characteristic
-        pass
-
     def guess_character(self, guessed_character):
         # Allows the player to guess the hidden character
-        if self.current_turn == 'human':
-            if guessed_character == self.computer_player.hidden_character:
-                self.game_state = 'human wins'
-            else:
-                self.game_state = 'computer wins'
+        active_player = self.human_player if self.current_bad_turn == 'computer' else self.computer_player
+        if guessed_character == active_player.hidden_character:
+            self.game_state = 'computer wins' if self.current_turn == 'computer' else 'human wins'
         else:
-            if guessed_character == self.human_player.hidden_character:
-                self.game_state = 'computer wins'
-            else:
-                self.game_state = 'human wins'
+            self.game_state = 'continue'
+        self.change_turn()
+
+    def apply_question(self, question):
+        # Applies the question to both boards and filters characters
+        for player in [self.human_player, self.computer_player]:
+            attribute, value = question["attribute"], question["value"]
+            player.board = [character for character in player.board if getattr(character, attribute) == value]
+        self.change_latenturn()

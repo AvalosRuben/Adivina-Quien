@@ -1,4 +1,4 @@
-from characters import Character
+from characters_list import Character
 characters = [
     Character(id=1, name="Alex", glasses=False, skin_tone='medium', hair_color='brown', eye_color='brown', sex='male', facial_hair='none', hat=False, image='characters_images/alex.png'),
     Character(id=2, name="Alfred", glasses=False, skin_tone='medium', hair_color='white', eye_color='blue', sex='male', facial_hair='moustache', hat=False, image='characters_images/alfred.png'),

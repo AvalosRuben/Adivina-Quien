@@ -1,5 +1,3 @@
-import character
-import game
 class Player:
     def __init__(self):
         self.board = [] # List of Characters representing the player's board
