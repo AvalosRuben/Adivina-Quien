@@ -1,62 +1,70 @@
 import pygame
+import random
+from character import Character
 from game import Game
+from player import Player
+from board import Board
+from questions import questions
 from characters_list import characters
 
 # Screen settings
-SCREEN_WIDTH = 800
+SCREEN_WIDTH = 1400  # Increased the screen width
 SCREEN_HEIGHT = 600
-
-# Colors
-WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
+BACKGROUND_COLOR = (255, 255, 255)
 
 # Initialize Pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Guess Who?")
 
+# Shuffle the characters
+random.shuffle(characters)
+
+# Calculate the width and height of each character image
+CHARACTER_WIDTH = 100
+CHARACTER_HEIGHT = 150
+
+# Calculate the spacing between characters
+HORIZONTAL_SPACING = (SCREEN_WIDTH - (6 * CHARACTER_WIDTH)) // 7
+VERTICAL_SPACING = (SCREEN_HEIGHT - (4 * CHARACTER_HEIGHT)) // 5
+
 # Create an instance of the game
 game = Game(characters)
 
-# Function to draw the play button
-def draw_play_button():
-    font = pygame.font.Font(None, 36)
-    text_play = font.render("PLAY", True, (0, 0, 0))
-    play_rect = text_play.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
-
-    screen.fill(WHITE)
-    pygame.draw.rect(screen, BLUE, play_rect, border_radius=10)
-    screen.blit(text_play, play_rect)
-    pygame.display.flip()
-
-    return play_rect
-
-# Function to check if the mouse click is within the play button area
-def is_inside_play_button(pos, play_rect):
-    return play_rect.collidepoint(pos)
-
-# Function to draw the character list
-def draw_character_list():
-    font = pygame.font.Font(None, 24)
-    for i, character in enumerate(game.characters):
-        image = pygame.image.load(character.image)
-        image_rect = image.get_rect(topleft=(50 + (i % 8) * 100, 50 + (i // 8) * 100))
-        screen.blit(image, image_rect)
-    pygame.display.flip()
-
+# Select a random character for the user
+selected_character = random.choice(characters)
+selected_character_image = pygame.image.load(selected_character.image)
+selected_character_image = pygame.transform.scale(selected_character_image, (CHARACTER_WIDTH, CHARACTER_HEIGHT))
 
 # Main game loop
 running = True
 while running:
-    play_rect = draw_play_button()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            print("Mouse click at:", event.pos)  # Print mouse click coordinates
-            if is_inside_play_button(event.pos, play_rect):
-                game.start_game()
-                draw_character_list()
+
+    # Display characters on the screen in a 6x4 grid
+    screen.fill(BACKGROUND_COLOR)
+    x, y = HORIZONTAL_SPACING, VERTICAL_SPACING
+    for character in characters:
+        character_image = pygame.image.load(character.image)
+        character_image = pygame.transform.scale(character_image, (CHARACTER_WIDTH, CHARACTER_HEIGHT))
+        screen.blit(character_image, (x, y))
+        x += CHARACTER_WIDTH + HORIZONTAL_SPACING
+        if x > SCREEN_WIDTH - CHARACTER_WIDTH - HORIZONTAL_SPACING:
+            x = HORIZONTAL_SPACING
+            y += CHARACTER_HEIGHT + VERTICAL_SPACING
+
+    # Display the selected character image below the button for questions
+    screen.blit(selected_character_image, (SCREEN_WIDTH - CHARACTER_WIDTH - HORIZONTAL_SPACING, VERTICAL_SPACING))
+
+    # Draw the button for questions more to the right
+    pygame.draw.rect(screen, (0, 0, 0), (SCREEN_WIDTH - 300, 50, 250, 50))  # Modified position and size of the button
+    font = pygame.font.Font(None, 36)
+    text_questions = font.render("Questions", True, (255, 255, 255))
+    screen.blit(text_questions, (SCREEN_WIDTH - 280, 60))  # Modified position of the text
+
+    pygame.display.flip()
 
 # Quit Pygame
 pygame.quit()
